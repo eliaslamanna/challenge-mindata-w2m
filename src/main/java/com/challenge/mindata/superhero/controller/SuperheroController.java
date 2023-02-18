@@ -1,6 +1,7 @@
 package com.challenge.mindata.superhero.controller;
 
 import com.challenge.mindata.superhero.controller.request.CreateSuperheroRequest;
+import com.challenge.mindata.superhero.controller.request.UpdateSuperheroRequest;
 import com.challenge.mindata.superhero.controller.response.SuperheroResponse;
 import com.challenge.mindata.superhero.service.SuperheroService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -27,10 +29,25 @@ public class SuperheroController {
         return ok(modelMapper.map(superheroService.create(createSuperheroRequest), SuperheroResponse.class));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<SuperheroResponse> get(@PathVariable String id) {
+        return ok(superheroService.getById(id));
+    }
+
     @GetMapping
     public ResponseEntity<List<SuperheroResponse>> getAll() {
-        var superheros = superheroService.getAll().stream().map(superhero -> modelMapper.map(superhero, SuperheroResponse.class)).toList();
-        return ok(superheros);
+        return ok(superheroService.getAll());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SuperheroResponse> update(@PathVariable String id, @Valid @RequestBody UpdateSuperheroRequest updateRequest) {
+        return ok(superheroService.update(updateRequest, id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        superheroService.delete(id);
+        return noContent().build();
     }
 
 }
