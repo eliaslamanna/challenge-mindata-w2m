@@ -2,6 +2,7 @@ package com.challenge.mindata.superhero.service;
 
 import com.challenge.mindata.exception.exception.ItemNotFoundException;
 import com.challenge.mindata.superhero.controller.request.CreateSuperheroRequest;
+import com.challenge.mindata.superhero.controller.request.SuperheroSearchParametersRequest;
 import com.challenge.mindata.superhero.controller.request.UpdateSuperheroRequest;
 import com.challenge.mindata.superhero.controller.response.SuperheroResponse;
 import com.challenge.mindata.superhero.repository.SuperheroRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
 @Service
 @AllArgsConstructor
@@ -45,6 +47,23 @@ public class SuperheroService {
 
     public void delete(String id) {
         superheroRepository.deleteById(id);
+    }
+
+    public List<SuperheroResponse> search(SuperheroSearchParametersRequest searchParametersRequest) {
+        final var ids = searchParametersRequest.getIds();
+
+        if (!ids.isEmpty()) {
+            if (isNotEmpty(searchParametersRequest.getSuperheroName())) {
+                return superheroRepository.findByIdInAndSuperheroNameContains(ids, searchParametersRequest.getSuperheroName()).stream().map(superhero -> modelMapper.map(superhero, SuperheroResponse.class)).collect(toList());
+            }
+            return superheroRepository.findAllByIdIn(ids).stream().map(superhero -> modelMapper.map(superhero, SuperheroResponse.class)).collect(toList());
+        }
+
+        if (isNotEmpty(searchParametersRequest.getSuperheroName())) {
+            return superheroRepository.findBySuperheroNameContains(searchParametersRequest.getSuperheroName()).stream().map(superhero -> modelMapper.map(superhero, SuperheroResponse.class)).collect(toList());
+        }
+
+        return superheroRepository.findAll().stream().map(superhero -> modelMapper.map(superhero, SuperheroResponse.class)).collect(toList());
     }
 
 }

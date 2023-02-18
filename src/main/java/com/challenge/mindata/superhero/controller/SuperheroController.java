@@ -1,6 +1,7 @@
 package com.challenge.mindata.superhero.controller;
 
 import com.challenge.mindata.superhero.controller.request.CreateSuperheroRequest;
+import com.challenge.mindata.superhero.controller.request.SuperheroSearchParametersRequest;
 import com.challenge.mindata.superhero.controller.request.UpdateSuperheroRequest;
 import com.challenge.mindata.superhero.controller.response.SuperheroResponse;
 import com.challenge.mindata.superhero.service.SuperheroService;
@@ -37,6 +38,11 @@ public class SuperheroController {
     @GetMapping
     public ResponseEntity<List<SuperheroResponse>> getAll() {
         return ok(superheroService.getAll());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SuperheroResponse>> search(@RequestBody SuperheroSearchParametersRequest searchParametersRequest) {
+        return ok(superheroService.search(searchParametersRequest));
     }
 
     @PutMapping("/{id}")
