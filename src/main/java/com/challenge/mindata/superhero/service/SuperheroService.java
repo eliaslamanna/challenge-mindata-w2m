@@ -33,19 +33,19 @@ public class SuperheroService {
         return superheroRepository.findAll().stream().map(superhero -> modelMapper.map(superhero, SuperheroResponse.class)).collect(toList());
     }
 
-    public SuperheroResponse getById(String id) {
+    public SuperheroResponse getById(Long id) {
         var superhero = superheroRepository.findById(id).orElseThrow(ItemNotFoundException::new);
         return modelMapper.map(superhero, SuperheroResponse.class);
     }
 
-    public SuperheroResponse update(UpdateSuperheroRequest updatesRequest, String id) {
+    public SuperheroResponse update(UpdateSuperheroRequest updatesRequest, Long id) {
         var superheroToUpdate = modelMapper.map(this.getById(id), Superhero.class);
         modelMapper.map(updatesRequest, superheroToUpdate);
 
         return modelMapper.map(superheroRepository.save(superheroToUpdate), SuperheroResponse.class);
     }
 
-    public void delete(String id) {
+    public void delete(Long id) {
         superheroRepository.deleteById(id);
     }
 

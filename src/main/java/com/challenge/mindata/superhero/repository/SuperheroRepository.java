@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SuperheroRepository extends JpaRepository<Superhero, String> {
+public interface SuperheroRepository extends JpaRepository<Superhero, Long> {
 
     List<Superhero> findBySuperheroNameContains(String superheroName);
 

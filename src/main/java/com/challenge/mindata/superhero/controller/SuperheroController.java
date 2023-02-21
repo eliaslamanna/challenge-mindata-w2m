@@ -45,7 +45,7 @@ public class SuperheroController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Retrieves Superhero's information."),
             @ApiResponse(code = 404, message = "Not found."),
             @ApiResponse(code = 500, message = "Internal server error.")})
-    public ResponseEntity<SuperheroResponse> get(@PathVariable String id) {
+    public ResponseEntity<SuperheroResponse> get(@PathVariable Long id) {
         return ok(superheroService.getById(id));
     }
 
@@ -73,7 +73,7 @@ public class SuperheroController {
             @ApiResponse(code = 404, message = "Not found."),
             @ApiResponse(code = 409, message = "Conflict."),
             @ApiResponse(code = 500, message = "Internal server error.")})
-    public ResponseEntity<SuperheroResponse> update(@PathVariable String id, @Valid @RequestBody UpdateSuperheroRequest updateRequest) {
+    public ResponseEntity<SuperheroResponse> update(@PathVariable Long id, @Valid @RequestBody UpdateSuperheroRequest updateRequest) {
         return ok(superheroService.update(updateRequest, id));
     }
 
@@ -82,7 +82,7 @@ public class SuperheroController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Superhero Deleted."),
             @ApiResponse(code = 404, message = "Not found."),
             @ApiResponse(code = 500, message = "Internal server error.")})
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         superheroService.delete(id);
         return noContent().build();
     }
