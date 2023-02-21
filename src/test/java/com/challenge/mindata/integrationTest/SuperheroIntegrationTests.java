@@ -33,6 +33,7 @@ class SuperheroIntegrationTests {
 	private ObjectMapper objectMapper;
 
 	@Test
+	@DisplayName("Create a superhero should create a new superhero with a given name and superHero name")
 	public void createNewSuperheroCorrectly(@Autowired SuperheroService superheroService) throws Exception {
 		var request = CreateSuperheroRequest.builder().name("New Name").superheroName("New Superhero").build();
 
@@ -48,6 +49,7 @@ class SuperheroIntegrationTests {
 	}
 
 	@Test
+	@DisplayName("Get superhero by id should retrive the wanted superhero")
 	public void getSuperHeroById(@Autowired SuperheroService superheroService) throws Exception {
 		var response = mockMvc.perform(get(String.format("/superheroes/ %d", 1L)))
 				.andExpect(status().isOk())
@@ -59,6 +61,7 @@ class SuperheroIntegrationTests {
 	}
 
 	@Test
+	@DisplayName("Update a superhero should update it's name and/or superheroName")
 	public void updateSuperHero(@Autowired SuperheroService superheroService) throws Exception {
 		var request = CreateSuperheroRequest.builder().name("Updated Name").superheroName("Updated Superhero").build();
 
@@ -74,6 +77,7 @@ class SuperheroIntegrationTests {
 	}
 
 	@Test
+	@DisplayName("Delete a superhero should take it out of the database")
 	public void deleteSuperHero(@Autowired SuperheroService superheroService) throws Exception {
 		mockMvc.perform(delete(String.format("/superheroes/ %d", 1L)))
 				.andExpect(status().isNoContent());
@@ -82,6 +86,7 @@ class SuperheroIntegrationTests {
 	}
 
 	@Test
+	@DisplayName("Search a superhero by differentIds or an approximate name should retrieve all possibilities")
 	public void searchForSuperHero(@Autowired SuperheroService superheroService) throws Exception {
 		var request = SuperheroSearchParametersRequest.builder().superheroName("Bat").build();
 
